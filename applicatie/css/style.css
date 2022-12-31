@@ -117,11 +117,6 @@ table{
     border-radius:5px;
   }
 
-.tabel_container{
-  display:flex;
-  justify-content: center;
-}
-
 .vluchttabel{
   display:flex;
   justify-content: center;
@@ -138,6 +133,19 @@ table, th, td {
     padding:8px;
   }
 
+  .tabel_container{
+    padding:0;
+    margin-bottom: 8em;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tabel_container, a{
+    color:#fff;
+    text-decoration: none;
+  }
+
   .Vlucht_toevoegen_knop{
     border:none;
     color:#fff;
@@ -148,7 +156,7 @@ table, th, td {
     border-radius: 10px;
   }
   .Vlucht_toevoegen_knop:hover{
-    transition: all 400ms ease-in;
+    transition: all 250ms ease-in;
     opacity:70%;
   }
 
@@ -188,7 +196,7 @@ table, th, td {
   }
 
   .toevoegen input[type='datetime-local']{
-    padding-inline: 29.3px
+    padding-inline: 29.6px;
   }
 
   .privacy_policy{
@@ -203,13 +211,42 @@ table, th, td {
     box-shadow: 0px 4px 8px 10px rgba(0,0,0,0.2);
   }
 
-  select{
-    padding:0.6em;
-    border-radius:8px;
-    margin-top:4em;
-    margin-left:75%;
-    margin-bottom:0.5em;
+  .show_all_knop{
+    margin-top: 3em;
+    cursor:pointer;
+    border: none;
+    color: #fff;
+    width: 100%;
+    font-size: 1.3em;
+    background-color: #419feb;
+    padding: 0.5em;
+    border-radius: 10px;
+
+    display:flex;
+    align-items: center;
+    align-content: center;
   }
+
+  .show_all_knop:hover{
+    transition: all 250ms ease-in;
+    opacity:70%;
+  }
+  
+  input[type='submit']{
+    cursor:pointer ;
+  }
+
+  .foutmeldingen{
+    display:flex;
+    color: rgb(255, 0, 0);
+    text-decoration: none;
+    font-weight:bold;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    justify-content: center;
+    margin-top: 1.2em;
+    }
+
 
   @media screen and (max-width: 800px){
     main, body{

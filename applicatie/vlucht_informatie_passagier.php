@@ -1,12 +1,15 @@
 <?php
 
+require_once('db_connectie.php');
+require_once('functions.php');
+
+
 $conn = maakVerbinding();
+$vluchtnummer = 0;
 
-
-$_post['vluchtnummer'];
-
-
-
+if(isset($_POST['vluchtnummer'])){
+  $vluchtnummer = $_POST['vluchtnummer'];
+}
 
 
 
@@ -31,36 +34,14 @@ $_post['vluchtnummer'];
       </header>
       <nav class="navigatie">
         <ul>
-          <li><a href="home.php">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li><a href="zelf_checkin_inlog.php">Inchecken</a></li>
           <li><a href="vlucht_zoeken_passagier.php">Andere vlucht zoeken</a></li>
         </ul>
       </nav>
       <main>
     <div class="vluchttabel">
-      <? 
-      krijgVluchtInformatie_passagier();
-      ?>
-        <table>
-            <tr>
-              <th>Vluchtnummer</th>
-              <th>Vliegtuigmaatschappij</th>
-              <th>Vertrekpunt</th>
-              <th>Bestemming</th>
-              <th>Vertrek</th>
-              <th>Aankomst</th>
-              <th>Passagiers</th>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>KLM</td>
-              <td>AMS</td>
-              <td>MLS</td>
-              <td>2022-11-11-15:40</td>
-              <td>2022-11-11-20:05</td>
-              <td>255</td>
-            </tr>
-      </table>
+      <?= krijg_Vluchtinformatie(0, $vluchtnummer)   ?>
     </div>
 </main>
 </body>

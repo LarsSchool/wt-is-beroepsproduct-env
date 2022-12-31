@@ -15,13 +15,13 @@
       </header>
       <nav class="navigatie">
         <ul>
-          <li><a href="home.php">Home</a></li>
+          <li><a href="index.php">Home</a></li>
         </ul>
       </nav>
       <main>
       <div class="privacy_policy">
       <h1>Privacy Policy</h1>
-<p>Last updated: November 23, 2022</p>
+<p>Last updated: December 28, 2022</p>
 <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
 <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">TermsFeed Privacy Policy Generator</a>.</p>
 <h1>Interpretation and Definitions</h1>
@@ -194,7 +194,7 @@
 <h1>Contact Us</h1>
 <p>If you have any questions about this Privacy Policy, You can contact us:</p>
 <ul>
-<li>By visiting this page on our website: <a href="file:///C:/Users/Larsv/Documents/GitHub/beroepsproduct-wtux-LarsSchool/home.php" rel="external nofollow noopener" target="_blank">file:///C:/Users/Larsv/Documents/GitHub/beroepsproduct-wtux-LarsSchool/contact.html</a></li>
+<li>By visiting this page on our website: <a href="file:///C:\Users\Larsv\Documents\GitHub\wt-is-beroepsproduct-env\applicatie\index.php" rel="external nofollow noopener" target="_blank">file:///C:\Users\Larsv\Documents\GitHub\wt-is-beroepsproduct-env\applicatie\contact.php</a></li>
 </ul>
 </div>
 </main>

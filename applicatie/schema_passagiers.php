@@ -1,3 +1,22 @@
+<?php
+
+require_once('db_connectie.php');
+require_once('functions.php');
+
+
+$conn = maakVerbinding();
+
+$passagiernummer = 0;
+
+if(isset($_POST['passagiernummer'])){
+  $passagiernummer = $_POST['passagiernummer'];
+}
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,95 +35,41 @@
       </header>
       <nav class="navigatie">
         <ul>
-          <li><a href="home.php">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li><a href="schema_passagiers.php">Passagiers</a></li>
           <li><a href="medewerker_main_site.php">Vluchten</a></li>
           <li><a href="medewerker_inchecken_passagier.php">Inchecken passagier</a></li>
         </ul>
       </nav>
       <main>
-      <select>
-      <option selected disabled>Sorteer op:</option>
-      <option>Vluchtnummer Hoog-Laag</option>
-      <option>Vluchtnummer Laag-Hoog</option>
-      <option>Voornaam A-Z</option>
-      <option>Voornaam Z-A</option>
-      <option>Achternaam A-Z</option>
-      <option>Achternaam Z-A</option>
-      <option>Telefoonnummer Hoog-Laag</option>
-      <option>Telefoonnummer Laag-Hoog</option>
-      <option>Stoelnummer Hoog-Laag</option>
-      <option>Stoelnummer Laag-Hoog</option>
-    </select>
-    <div class="tabel_container">
-        <table>
-            <tr>
-              <th>Vluchtnummer</th>
-              <th>Voornaam</th>
-              <th>Achternaam</th>
-              <th>Telefoonnummer</th>
-              <th>Email-adres</th>
-              <th>Stoel</th>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>Lars</td>
-              <td>van Duijnhoven</td>
-              <td>06-12312345</td>
-              <td>Larsemail@gmail.com</td>
-              <td>37A</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Bastiaan</td>
-                <td>Hopman</td>
-                <td>06-12312345</td>
-                <td>Bastiaansemail@gmail.com</td>
-                <td>12D</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lars</td>
-                <td>van Duijnhoven</td>
-                <td>06-12312345</td>
-                <td>Larsemail@gmail.com</td>
-                <td>37A</td>
-              </tr>
-              <tr>
-                  <td>2</td>
-                  <td>Bastiaan</td>
-                  <td>Hopman</td>
-                  <td>06-12312345</td>
-                  <td>Bastiaansemail@gmail.com</td>
-                  <td>12D</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Lars</td>
-                    <td>van Duijnhoven</td>
-                    <td>06-12312345</td>
-                    <td>Larsemail@gmail.com</td>
-                    <td>37A</td>
-                  </tr>
-                  <tr>
-                      <td>2</td>
-                      <td>Bastiaan</td>
-                      <td>Hopman</td>
-                      <td>06-12312345</td>
-                      <td>Bastiaansemail@gmail.com</td>
-                      <td>12D</td>
-                    </tr>
-      </table>
-    </div>
-    <div class="medewerker_knoppen">
+      <div class="medewerker_knoppen">
         <form action="passagier_toevoegen.php">
             <button class="Vlucht_toevoegen_knop" >Passagier toevoegen</button>
         </form>    
-        <form action="schema_passagiers.php">
-        <input type="text" placeholder="Naam passagier">
+        <form action="schema_passagiers.php" method="POST">
+        <input type="text" placeholder="Passagiersnummer" name="passagiernummer">
         <input type="submit" value="Zoeken"> 
     </form>
     </div>
-</main>
+    <div class="tabel_container">
+    <?php
+  if(!isset($_GET['show_all_passagiers'])){
+    echo krijg_passagierinformatie(1, $passagiernummer, false);
+  } 
+  else if(isset($_GET['show_all_passagiers'])){
+    echo krijg_passagierinformatie(1, $passagiernummer, true);
+  }
+?>   
+       </div>
+       <?php
+  if(!isset($_GET['show_all_passagiers'])){
+    $show_all_knop = '        <form action="schema_passagiers.php">
+    <button  class="show_all_knop" name="show_all_passagiers">Laat alle passagiers zien.</button>
+  </form>';
+    echo $show_all_knop;
+  } 
+?>  
+
+      </main>
 </body>
 </html>

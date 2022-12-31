@@ -1,3 +1,14 @@
+<?php
+require_once('db_connectie.php');
+require_once('functions.php');
+
+$conn= maakVerbinding();
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,26 +27,59 @@
       </header>
       <nav class="navigatie">
         <ul>
-          <li><a href="home.php">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li><a href="schema_passagiers.php">Terug</a></li>
         </ul>
       </nav>
       <main>
-      <form class="toevoegen" action="passagier_toevoegen.php">
-      <input class="vluchtnummer" type="number" placeholder="Vluchtnummer" required>
+      <form class="toevoegen" action="passagier_toevoegen.php" method="POST">
+      <input type="text" placeholder="Naam" pattern="[A-Za-z].{2,}" name="naam" required>
       <br>
-      <input class="voornaam" type="text" placeholder="Voornaam" pattern="[A-Za-z].{2,}" required>
+      <input type="number" placeholder="Vluchtnummer" name="vluchtnummer" required>
       <br>
-      <input class="achternaam" type="text" placeholder="Achternaam" pattern="[A-Za-z].{2,}" required>
+      <input type="char" placeholder="Geslacht" name="geslacht" required>
       <br>
-      <input class="telefoonnummer" type="tel" placeholder="Telefoonnummer" required>
+      <input type="number" placeholder="Balienummer" name="balienummer" required>
       <br>
-      <input class="email" type="email" placeholder="Email-adres" required>
+      <input type="text" placeholder="Stoel" name="stoel" required>
       <br>
-      <input class="stoelnummer" type="number" placeholder="Stoelnummer" required>
+      <input type="datetime-local" name="inchecktijdstip" >
       <br>
-      <input class="inloggen" type="submit" value="Passagier toevoegen">
+      <input type="submit" value="Passagier toevoegen" name="submit">
       </form>
+      <?php
+      if(isset($_POST['submit'])){
+        $passagiernummer = get_max('passagier', 'passagiernummer')+1;
+        $naam = $_POST['naam'];
+        $vluchtnummer = $_POST['vluchtnummer'];
+        $geslacht = $_POST['geslacht'];
+        $balienummer = $_POST['balienummer'];
+        $stoel = $_POST['stoel'];
+
+        if($_POST['inchecktijdstip'] >= date('Y/m/d H:i')){
+          $inchecktijdstip = $_POST['inchecktijdstip'];
+          $inchecktijdstip = date('Y-m-d H:i:s.000', strtotime($inchecktijdstip));
+          $sql = "insert into passagier
+          values (:passagiernummer, :naam, :vluchtnummer, :geslacht, :balienummer, :stoel, :inchecktijdstip)";
+          $query = $conn->prepare($sql);
+          $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel, 'inchecktijdstip' => $inchecktijdstip]);
+          if($affected_rows >= 1){
+            //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
+           header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+          } 
+        } 
+        else {
+          $sql = "insert into passagier
+          values (:passagiernummer, :naam, :vluchtnummer, :geslacht, :balienummer, :stoel, NULL)";
+          $query = $conn->prepare($sql);
+          $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel]);
+          if($affected_rows >= 1){
+            //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
+           header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+          } 
+        }
+       }
+      ?>
     </main>
 </body>
 </html>

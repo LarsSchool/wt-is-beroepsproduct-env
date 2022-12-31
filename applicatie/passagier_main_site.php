@@ -23,7 +23,7 @@
       </header>
       <nav class="navigatie">
         <ul>
-          <li><a href="home.php">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li><a href="zelf_checkin_inlog.php">Inchecken</a></li>
           <li><a href="vlucht_zoeken_passagier.php">Vlucht zoeken</a></li>
         </ul>
