@@ -1,3 +1,10 @@
+<?php
+require_once('db_connectie.php');
+require_once('functions.php');
+session_start();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +28,12 @@
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <h1>Gelre Airport</h1>
+    <!-- <h1>Gelre Airport</h1> -->
+    <?php
+      if($_SESSION['logged_in']){
+      echo '<button onclick="logout()">Logout</button>';
+      }
+    ?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">

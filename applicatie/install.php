@@ -34,11 +34,14 @@ $sh->execute();
     $uid = 1;
     $username = "Richard"; //de gebruikersnaam van de medewerker die wordt toegevoegd
     $password = 'hellokitty';
+    $salt = 'JIDWHUDWHUWDHUWDHUWDIJOJVHIVEUHIUIEEJIEJFE';
+    $password .= $salt;
 
     $hash = password_hash($password, PASSWORD_DEFAULT); //het wachtwoord voor de gebruiker.
-    $sql = "INSERT INTO medewerkers (uid,password,naam) VALUES ('".$uid."',N'".$hash."',N'".$username."');";
-    $sh = $pdo->prepare($sql);
-    $sh->execute();
+    echo password_verify($password, $hash);
+    //$sql = "INSERT INTO medewerkers (uid,password,naam) VALUES ('".$uid."',N'".$hash."',N'".$username."');";
+    //$sh = $pdo->prepare($sql);
+    //$sh->execute();
 
     echo "Gebruiker " .$username. " is aangemaakt met als uid ".$uid." en als wachtwoord " . $password;
 }catch(PDOException $exception) {

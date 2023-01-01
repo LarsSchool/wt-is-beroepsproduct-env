@@ -2,6 +2,8 @@
 
 require_once('db_connectie.php');
 require_once('functions.php');
+session_start();
+check_log_in();
 
 
 $conn = maakVerbinding();
