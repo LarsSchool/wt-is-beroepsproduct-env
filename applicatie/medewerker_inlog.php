@@ -22,7 +22,7 @@ check_log_in();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <h1>Gelre Airport</h1>
+    <?php titel_knop()?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">
@@ -43,11 +43,11 @@ check_log_in();
      if(login($_POST['username'], $_POST['password'])){
         header('location: medewerker_main_site.php');
      } else {
-        echo 'verkeerde gegevens, lul';
+        echo 'Het wachtwoord of de gebruikersnaam is verkeerd ingevoerd.';
      }
-   }
-
-     //check_log_in();
+   } //else if ((!isset($_POST['username']) && !isset($_POST['password']) && $_SESSION['logged_in'] != true)|| !login($_POST['username'], $_POST['password'])){
+     // $_SESSION['logged_in'] = false;
+   //}
     ?>
   </main>
 </body>

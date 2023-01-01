@@ -22,7 +22,7 @@ $conn = maakVerbinding();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <h1>Gelre Airport</h1>
+    <?php titel_knop()?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">

@@ -413,11 +413,15 @@ function check_space_onboard($where = '-1 or 1=1')
 
 function check_log_in()
 {
-  if (!$_SESSION['logged_in']) {
-    header('location: index.php');
-  } else if($_SERVER['PHP_SELF'] == '/medewerker_inlog.php'){
-    header('location: medewerker_main_site.php');
-  }
+  if ($_SERVER['PHP_SELF'] == '/medewerker_inlog.php') {
+    if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
+      header('location: medewerker_main_site.php');   
+    }
+  } else if ($_SERVER['PHP_SELF'] != '/medewerker_inlog.php') {
+   if (!$_SESSION['logged_in']) {
+     header('location: index.php');
+   }
+ }
 }
 
 
@@ -453,10 +457,28 @@ function login($username, $password)
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
-function logout(){
+function log_out(){
+  if(isset($_POST['log_out'])){
+  session_unset();
+  session_destroy();
+  header('location: index.php');
+    exit;
+  }
+}
 
 
-  
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+function titel_knop(){
+  if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']){
+  echo '<form method="POST">
+  <button type="submit" name="log_out">Gelre Airport</button>
+  </form>';
+  } else {
+  echo '<h1>Gelre Airport</h1>';
+  }
+
 }
 
 

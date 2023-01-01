@@ -13,7 +13,7 @@
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <h1>Gelre Airport</h1>
+    <?php titel_knop()?>
   </header>
   <nav class="navigatie">
     <ul>
