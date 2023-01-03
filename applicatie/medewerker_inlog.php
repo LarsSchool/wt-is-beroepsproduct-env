@@ -1,8 +1,9 @@
 <?php
-require_once('functions.php');
 require_once('db_connectie.php');
+require_once('functions.php');
 session_start();
 check_log_in();
+log_out();
 ?>
 
 
@@ -43,11 +44,9 @@ check_log_in();
      if(login($_POST['username'], $_POST['password'])){
         header('location: medewerker_main_site.php');
      } else {
-        echo 'Het wachtwoord of de gebruikersnaam is verkeerd ingevoerd.';
+        echo'<p class="foutmeldingen">Het wachtwoord of de gebruikersnaam is verkeerd ingevoerd.</p>';
      }
-   } //else if ((!isset($_POST['username']) && !isset($_POST['password']) && $_SESSION['logged_in'] != true)|| !login($_POST['username'], $_POST['password'])){
-     // $_SESSION['logged_in'] = false;
-   //}
+   }
     ?>
   </main>
 </body>

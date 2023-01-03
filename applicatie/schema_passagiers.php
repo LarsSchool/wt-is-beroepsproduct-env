@@ -4,6 +4,7 @@ require_once('db_connectie.php');
 require_once('functions.php');
 session_start();
 check_log_in();
+log_out();
 
 $conn = maakVerbinding();
 
@@ -64,7 +65,7 @@ if (isset($_POST['passagiernummer'])) {
       ?>
     </div>
     <?php
-    if (!isset($_GET['show_all_passagiers'])) {
+    if (!isset($_GET['show_all_passagiers']) && !isset($_POST['passagiernummer'])) {
       $show_all_knop = '        <form action="schema_passagiers.php">
     <button  class="show_all_knop" name="show_all_passagiers">Laat alle passagiers zien.</button>
   </form>';

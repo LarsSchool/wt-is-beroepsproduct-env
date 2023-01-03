@@ -3,7 +3,7 @@ require_once('db_connectie.php');
 require_once('functions.php');
 session_start();
 check_log_in();
-
+log_out();
 $conn = maakVerbinding();
 
 
@@ -53,10 +53,21 @@ $conn = maakVerbinding();
       <br>
       <input type="submit" value="Vlucht toevoegen" name="submit">
     </form>
-    <div class="foutmeldingen1">
       <?php
+      try{
       if (isset($_POST['submit'])) {
-        if ($_POST['vertrektijd'] > date('Y/m/d H:i')) {
+        // $vertrektijd = $_POST['vertrektijd'];
+        $systeem_datum = new DateTime('now', new DateTimeZone('CET'));
+        $systeem_datum = $systeem_datum->format('Y/m/d H:i:s.000');
+        // $vertrektijd = strtotime($vertrektijd);
+
+        //if ($_POST['vertrektijd'] > $systeem_datum) {
+
+          $vertrektijd = strtotime($_POST['vertrektijd']);
+          $vertrektijd = new DateTime("@$vertrektijd");    
+          $vertrektijd = $vertrektijd->format('Y/m/d H:i:s.000');              
+
+          if ($vertrektijd > $systeem_datum) {
           $vluchtnummer = get_max('vlucht', 'vluchtnummer') + 1;
           $bestemming = $_POST['bestemming'];
           $gatecode = $_POST['gatecode'];
@@ -64,8 +75,10 @@ $conn = maakVerbinding();
           $max_gewicht_pp = $_POST['max_gewicht_pp'];
           $max_totaalgewicht = $_POST['max_totaalgewicht'];
           $maatschappijcode = $_POST['maatschappijcode'];
-          $vertrektijd = $_POST['vertrektijd'];
-          $vertrektijd = date('Y-m-d H:i:s.000', strtotime($vertrektijd));
+          //$vertrektijd = $_POST['vertrektijd'];
+          //$vertrektijd = date('Y-m-d H:i:s.000', strtotime($vertrektijd));
+          //$vertrektijd = $vertrektijd->format('Y/m/d H:i:s.000');
+
 
           $sql = "insert into vlucht (vluchtnummer, bestemming, gatecode, max_aantal, max_gewicht_pp, max_totaalgewicht, vertrektijd, maatschappijcode)
                   values (:vluchtnummer, :bestemming, :gatecode, :max_aantal_passagiers, :max_gewicht_pp, :max_totaalgewicht,:vertrektijd, :maatschappijcode)";
@@ -77,11 +90,14 @@ $conn = maakVerbinding();
             header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
           }
         } else {
-          echo "Selecteer alstublieft een tijdstip wat later is dan nu.";
+          echo '<p class="foutmeldingen">Er is een fout opgetreden. Controleer of de gegevens kloppen.</p>';
         }
       }
+    } 
+    catch (PDOException $e) {
+      echo '<p class="foutmeldingen">Er is een fout opgetreden. Dit komt waarschijnlijk doordat er een gegeven verkeerd is ingevuld.</p>';
+    }
       ?>
-    </div>
   </main>
 </body>
 

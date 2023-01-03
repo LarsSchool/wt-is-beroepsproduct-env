@@ -3,6 +3,7 @@ require_once('db_connectie.php');
 require_once('functions.php');
 session_start();
 check_log_in();
+log_out();
 
 $conn = maakVerbinding();
 
@@ -52,35 +53,47 @@ $conn = maakVerbinding();
       <input type="submit" value="Passagier toevoegen" name="submit">
     </form>
     <?php
-    if (isset($_POST['submit'])) {
-      $passagiernummer = get_max('passagier', 'passagiernummer') + 1;
-      $naam = $_POST['naam'];
-      $vluchtnummer = $_POST['vluchtnummer'];
-      $geslacht = $_POST['geslacht'];
-      $balienummer = $_POST['balienummer'];
-      $stoel = $_POST['stoel'];
+    try {
+      if (isset($_POST['submit'])) {
+        $passagiernummer = get_max('passagier', 'passagiernummer') + 1;
+        $naam = $_POST['naam'];
+        $vluchtnummer = $_POST['vluchtnummer'];
+        $geslacht = $_POST['geslacht'];
+        $balienummer = $_POST['balienummer'];
+        $stoel = $_POST['stoel'];
 
-      if ($_POST['inchecktijdstip'] >= date('Y/m/d H:i')) {
-        $inchecktijdstip = $_POST['inchecktijdstip'];
-        $inchecktijdstip = date('Y-m-d H:i:s.000', strtotime($inchecktijdstip));
-        $sql = "insert into passagier
+        if ($_POST['inchecktijdstip'] >= date('Y/m/d H:i')) {
+          $inchecktijdstip = $_POST['inchecktijdstip'];
+          $inchecktijdstip = date('Y-m-d H:i:s.000', strtotime($inchecktijdstip));
+          $sql = "insert into passagier
           values (:passagiernummer, :naam, :vluchtnummer, :geslacht, :balienummer, :stoel, :inchecktijdstip)";
-        $query = $conn->prepare($sql);
-        $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel, 'inchecktijdstip' => $inchecktijdstip]);
-        if ($affected_rows >= 1) {
-          //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
-          header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
-        }
-      } else {
-        $sql = "insert into passagier
+          $query = $conn->prepare($sql);
+          $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel, 'inchecktijdstip' => $inchecktijdstip]);
+          $affected_rows = $query->rowCount();
+          if ($affected_rows >= 1) {
+            //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
+            header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+          } else {
+            echo '<p class="foutmeldingen">Er is een fout opgetreden, controleer of de ingevulde gegevens kloppen.</p>';
+          }
+        } else {
+          $sql = "insert into passagier
           values (:passagiernummer, :naam, :vluchtnummer, :geslacht, :balienummer, :stoel, NULL)";
-        $query = $conn->prepare($sql);
-        $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel]);
-        if ($affected_rows >= 1) {
-          //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
-          header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+          $query = $conn->prepare($sql);
+          $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel]);
+          $affected_rows = $query->rowCount();
+
+          if ($affected_rows >= 1) {
+            //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
+            header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+          } else {
+            echo '<p class="foutmeldingen">Er is een fout opgetreden, controleer of de ingevulde gegevens kloppen.</p>';
+          }
         }
       }
+    } 
+    catch (PDOException $e) {
+      echo '<p class="foutmeldingen">Er is een fout opgetreden. Dit komt waarschijnlijk doordat er een verkeerde stoel of vluchtnummer is ingevoerd.</p>';
     }
     ?>
   </main>

@@ -113,30 +113,36 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
   } else if (is_numeric($where)) {
     $subquery = 'vluchtnummer = ' . $where;
     $sql = "SELECT * FROM vlucht WHERE " . $subquery;
-  } else {
+  } else if (strlen($where) != 0){
+    echo $where;
+    var_dump($where);
     header("location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    die();
+  } else {
+    echo '<p class="foutmeldingen">Vul alstublieft iets in voordat u gaat zoeken.</p>';
     die();
   }
 
   $conn = maakVerbinding();
-  if ($isAdmin = 1) {
+  if ($isAdmin == 1) {
     $data = '<table
                 <thead>
                   <th>Vluchtnummer</a></th>
                   <th><a href="medewerker_main_site.php?bestemming=' . $bestemmingVolgorde . '">Bestemming</th>
                   <th>Gatecode</th>
                   <th>Max aantal passagiers</th>
+                  <th>Max gewicht pp</th>
+                  <th>Max totaalgewicht</th>
                   <th><a href="medewerker_main_site.php?vertrektijd=' . $vertrektijdVolgorde . '">Vertrektijd</a></th>
                   <th>Maatschappijcode</th>';
     $data .= '</thead>';
-  } else if ($isAdmin = 0) {
+  } else if ($isAdmin == 0) {
     $data = '<table
             <thead>
-              <th>Vluchtnummer</a></th>
+              <th>Vluchtnummer</th>
               <th>Bestemming</th>
               <th>Gatecode</th>
-              <th>Max aantal passagiers</th>
-              <th>Vertrektijd</a></th>
+              <th>Vertrektijd</th>
               <th>Maatschappijcode</th>';
     $data .= '</thead>';
   }
@@ -146,22 +152,44 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
   $stmt->execute([$where]);
   $affected_rows = $stmt->rowCount();
 
-  if ($affected_rows == 0) {
-    echo 'Dit vluchtnummer staat helaas niet in onze database, onze excuses hiervoor.';
-  } else {
-    foreach ($stmt as $rij) {
-      $data .= '<tr>';
-      $data .= '<td>' . $rij['vluchtnummer'] . '</td>';
-      $data .= '<td>' . $rij['bestemming'] . '</td>';
-      $data .= '<td>' . $rij['gatecode'] . '</td>';
-      $data .= '<td>' . $rij['max_aantal'] . '</td>';
-      $data .= '<td>' . $rij['vertrektijd'] . '</td>';
-      $data .= '<td>' . $rij['maatschappijcode'] . '</td>';
-      $data .= '</tr>';
+
+  if ($isAdmin == 1) {
+    if ($affected_rows == 0) {
+      echo '<p class="foutmeldingen">Dit vluchtnummer staat helaas niet in onze database, onze excuses hiervoor.</p>';
+    } else {
+      foreach ($stmt as $rij) {
+        $data .= '<tr>';
+        $data .= '<td>' . $rij['vluchtnummer'] . '</td>';
+        $data .= '<td>' . $rij['bestemming'] . '</td>';
+        $data .= '<td>' . $rij['gatecode'] . '</td>';
+        $data .= '<td>' . $rij['max_aantal'] . '</td>';
+        $data .= '<td>' . $rij['max_gewicht_pp'] . '</td>';
+        $data .= '<td>' . $rij['max_totaalgewicht'] . '</td>';
+        $data .= '<td>' . $rij['vertrektijd'] . '</td>';
+        $data .= '<td>' . $rij['maatschappijcode'] . '</td>';
+        $data .= '</tr>';
+      }
+      $data .= '</table';
+      return $data;
     }
-    $data .= '</table';
-    return $data;
+  } else if ($isAdmin == 0) {
+    if ($affected_rows == 0) {
+      echo '<p class="foutmeldingen">Dit vluchtnummer staat helaas niet in onze database, onze excuses hiervoor.</p>';
+    } else {
+      foreach ($stmt as $rij) {
+        $data .= '<tr>';
+        $data .= '<td>' . $rij['vluchtnummer'] . '</td>';
+        $data .= '<td>' . $rij['bestemming'] . '</td>';
+        $data .= '<td>' . $rij['gatecode'] . '</td>';
+        $data .= '<td>' . $rij['vertrektijd'] . '</td>';
+        $data .= '<td>' . $rij['maatschappijcode'] . '</td>';
+        $data .= '</tr>';
+      }
+      $data .= '</table';
+      return $data;
+    }
   }
+
 }
 
 
@@ -236,8 +264,13 @@ function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_pas
   } else if (is_numeric($where)) {
     $subquery = 'passagiernummer = ' . $where;
     $sql = "SELECT * FROM passagier WHERE " . $subquery;
-  } else {
+  } else if (strlen($where) != 0){
+    echo $where;
+    var_dump($where);
     header("location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    die();
+  } else {
+    echo '<p class="foutmeldingen">Vul alstublieft iets in voordat u gaat zoeken.</p>';
     die();
   }
 
@@ -250,6 +283,7 @@ function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_pas
                 <thead>
                   <th><a href="schema_passagiers.php?passagiernummer=' . $pasnumVolgorde . '">Passagiernummer</a></th>
                   <th>Naam</th>
+                  <th>Vluchtnummer</th>
                   <th>Geslacht</th>
                   <th>Balienummer</th>
                   <th><a href="schema_passagiers.php?stoel=' . $stoelVolgorde . '">Stoel</a></th>
@@ -265,12 +299,13 @@ function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_pas
 
 
   if ($affected_rows == 0) {
-    echo 'Dit passagiernummer staat helaas niet in onze database, onze excuses hiervoor.';
+    echo '<p class="foutmeldingen">Dit passagiernummer staat helaas niet in onze database, onze excuses hiervoor.</p>';
   } else {
     foreach ($stmt as $rij) {
       $data .= '<tr>';
       $data .= '<td>' . $rij['passagiernummer'] . '</td>';
       $data .= '<td>' . $rij['naam'] . '</td>';
+      $data .= '<td>' . $rij['vluchtnummer'] . '</td>';
       $data .= '<td>' . $rij['geslacht'] . '</td>';
       $data .= '<td>' . $rij['balienummer'] . '</td>';
       $data .= '<td>' . $rij['stoel'] . '</td>';
@@ -341,7 +376,6 @@ function get_data($tabel, $kolom, $where = '1=1')
   $conn = maakVerbinding();
 
   $sql = "SELECT $kolom FROM $tabel WHERE $where";
-  echo $sql;
 
   $query = $conn->prepare($sql);
   $query->execute();
@@ -364,9 +398,9 @@ function check_weight($where = '-1 or 1=1')
 
   $sql = "SELECT max_totaalgewicht - SUM(gewicht) AS rest
   FROM BagageObject
-  JOIN Passagier
+  RIGHT JOIN Passagier
   ON BagageObject.passagiernummer=Passagier.passagiernummer
-  JOIN Vlucht
+  RIGHT JOIN Vlucht
   ON Passagier.vluchtnummer=Vlucht.vluchtnummer
   GROUP BY Passagier.vluchtnummer, max_totaalgewicht
   HAVING Passagier.vluchtnummer = :waar";
@@ -378,7 +412,11 @@ function check_weight($where = '-1 or 1=1')
   foreach ($query as $rij) {
     $resultaat = $rij[0];
   }
-  return $resultaat;
+  if($resultaat == NULL){
+    return get_data('vlucht', 'max_totaalgewicht', "vluchtnummer = $where");
+  } else{
+   return $resultaat;
+  }
 }
 
 
@@ -390,7 +428,7 @@ function check_space_onboard($where = '-1 or 1=1')
   require_once('db_connectie.php');
   $conn = maakVerbinding();
 
-  $sql = "SELECT max_aantal - COUNT(Passagier.passagiernummer)
+  $sql = "SELECT max_aantal - COUNT(Passagier.inchecktijdstip)
   FROM Passagier
   JOIN Vlucht
   ON Passagier.vluchtnummer = vlucht.vluchtnummer

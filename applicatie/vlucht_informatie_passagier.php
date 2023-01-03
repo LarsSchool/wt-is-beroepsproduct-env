@@ -2,7 +2,7 @@
 
 require_once('db_connectie.php');
 require_once('functions.php');
-
+log_out();
 
 $conn = maakVerbinding();
 $vluchtnummer = 0;
@@ -42,8 +42,8 @@ if (isset($_POST['vluchtnummer'])) {
     </ul>
   </nav>
   <main>
-    <div class="vluchttabel foutmeldingen">
-      <?= krijg_Vluchtinformatie(0, $vluchtnummer) ?>
+    <div class="vluchttabel">
+      <?php echo krijg_Vluchtinformatie(0, $vluchtnummer) ?>
     </div>
   </main>
 </body>

@@ -4,7 +4,7 @@ require_once('db_connectie.php');
 require_once('functions.php');
 session_start();
 check_log_in();
-
+log_out();
 
 $conn = maakVerbinding();
 
@@ -63,7 +63,7 @@ if(isset($_POST['vluchtnummer'])){
        </div>
        <?php
 
-  if(!isset($_GET['show_all_vluchten'])){
+  if(!isset($_GET['show_all_vluchten']) && !isset($_POST['vluchtnummer'])){
     $show_all_knop = '        <form action="medewerker_main_site.php">
     <button  class="show_all_knop" name="show_all_vluchten">Laat alle vluchten zien.</button>
     </form>';

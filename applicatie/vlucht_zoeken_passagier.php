@@ -1,6 +1,7 @@
 <?php
-include_once("db_connectie.php");
-
+require_once('db_connectie.php');
+require_once('functions.php');
+log_out();
 $conn = maakVerbinding();
 
 

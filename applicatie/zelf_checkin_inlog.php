@@ -1,10 +1,9 @@
 <?php
 require_once('db_connectie.php');
 require_once('functions.php');
+log_out();
 
 $conn = maakVerbinding();
-
-
 
 ?>
 
@@ -24,7 +23,7 @@ $conn = maakVerbinding();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <?php titel_knop()?>
+    <?php titel_knop() ?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">
@@ -49,64 +48,72 @@ $conn = maakVerbinding();
       <br>
       <input type="submit" value="Inchecken bagage" name="inchecken_bagage">
     </form>
-    <div class="foutmeldingen">
-      <?php
-      //INCHECKEN PASSAGIER
-      if (isset($_POST['inchecken_passagier'])) {
-        $passagiernummer = $_POST['passagiernummer_passagier'];
-        if (check_space_onboard(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer")) > 0) {
-          $check = check_of_leeg('passagier', 'inchecktijdstip', "passagiernummer = $passagiernummer");
+    <?php
+    //INCHECKEN PASSAGIER
+    if (isset($_POST['inchecken_passagier'])) {
+      $passagiernummer = $_POST['passagiernummer_passagier'];
+      if (check_space_onboard(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer")) > 0) {
+        $check = check_of_leeg('passagier', 'inchecktijdstip', "passagiernummer = $passagiernummer");
+        $check2 = check_of_leeg('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer");
 
-          if ($check) {
-            $inchecktijdstip = new DateTime('now', new DateTimeZone('CET'));
-            $inchecktijdstip = $inchecktijdstip->format('Y/m/d H:i:s.v');
+        if ($check && !$check2) {
+          $inchecktijdstip = new DateTime('now', new DateTimeZone('CET'));
+          $inchecktijdstip = $inchecktijdstip->format('Y/m/d H:i:s.v');
 
-            $sql = "update Passagier
+          $sql = "update Passagier
           set inchecktijdstip = :inchecktijdstip
           where passagiernummer = :passagiernummer";
-            $query = $conn->prepare($sql);
-            $query->execute(['inchecktijdstip' => $inchecktijdstip, 'passagiernummer' => $passagiernummer]);
-            $affected_rows = $query->rowCount();
-            if ($affected_rows >= 1) {
-              //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
-              header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
-            }
-          } else {
-            echo 'U bent al ingecheckt of u hebt een verkeerd passagiernummer ingevoerd.';
-          }
-        } else {
-          echo 'Deze vlucht is helaas al volgeboekt.';
-        }
-      }
-
-      //INCHECKEN BAGAGE 
-      if (isset($_POST['inchecken_bagage'])) {
-        $passagiernummer = $_POST['passagiernummer_bagage'];
-        $gewicht = $_POST['gewicht'];
-        $check = check_weight(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer"));
-
-        if ($check > $gewicht) {
-          $objectvolgnummer = get_max('bagageobject', 'objectvolgnummer', "passagiernummer = $passagiernummer");
-          if ($objectvolgnummer == NULL) {
-            $objectvolgnummer = 0;
-          } else {
-            $objectvolgnummer = $objectvolgnummer + 1;
-          }
-
-          $sql = "insert into BagageObject (passagiernummer, objectvolgnummer, gewicht)
-        values (:passagiernummer, :objectvolgnummer, :gewicht)";
           $query = $conn->prepare($sql);
-          $query->execute(['passagiernummer' => $passagiernummer, 'objectvolgnummer' => $objectvolgnummer, 'gewicht' => $gewicht]);
+          $query->execute(['inchecktijdstip' => $inchecktijdstip, 'passagiernummer' => $passagiernummer]);
           $affected_rows = $query->rowCount();
-          if ($affected_rows == 0) {
-            echo "Er mag niet meer dan 9 bagage meegenomen worden per passagier!";
+          var_dump($affected_rows);
+          if ($affected_rows >= 1) {
+            //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
+            header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+            echo 'Gelukt!';
+          } else {
+            echo '<p class="foutmeldingen">Er is iets fout gegaan, probeer het opnieuw.</p>';
           }
         } else {
-          echo 'Deze vlucht kan geen bagage meer kwijt van dit gewicht.';
+          echo '<p class="foutmeldingen">Deze passagier is al ingecheckt of de passagier bestaat (nog) niet.</p>';
+        }
+      } else {
+        echo '<p class="foutmeldingen">Deze vlucht is helaas al volgeboekt.</p>';
+      }
+    }
+    
+    //INCHECKEN BAGAGE 
+    if (isset($_POST['inchecken_bagage'])) {
+      $passagiernummer = $_POST['passagiernummer_bagage'];
+      $gewicht = $_POST['gewicht'];
+      $check = check_weight(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer"));
+
+      if ($check > $gewicht) {
+        $objectvolgnummer = get_max('bagageobject', 'objectvolgnummer', "passagiernummer = $passagiernummer");
+        if ($objectvolgnummer == NULL) {
+          $objectvolgnummer = 0;
+        } else {
+          $objectvolgnummer = $objectvolgnummer + 1;
+        }
+
+        $sql = "insert into BagageObject (passagiernummer, objectvolgnummer, gewicht)
+          values (:passagiernummer, :objectvolgnummer, :gewicht)";
+        $query = $conn->prepare($sql);
+        $query->execute(['passagiernummer' => $passagiernummer, 'objectvolgnummer' => $objectvolgnummer, 'gewicht' => $gewicht]);
+        $affected_rows = $query->rowCount();
+        if ($affected_rows == 0) {
+          $_SESSION['error_message'] = 'Er mag niet meer dan 9 bagage meegenomen worden per passagier!';
         }
       }
-      ?>
-    </div>
+      header('Location: ' . $_SERVER['PHP_SELF']);
+      exit;
+    }
+
+    if (isset($_SESSION['error_message'])) {
+      echo '<p class="foutmeldingen">' . $_SESSION['error_message'] . '</p>';
+      unset($_SESSION['error_message']);
+    }
+    ?>
   </main>
 </body>
 
