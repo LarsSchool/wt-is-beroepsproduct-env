@@ -2,11 +2,11 @@
 
 // defined in 'variables.env'
 $db_host = 'database_server'; // de database server 
-$db_name = 'gelreairport';                    // naam van database
+$db_name = 'gelreairport'; // naam van database
 
 // defined in sql-script 'movies.sql'
-$db_user    = 'sa';                 // db user
-$db_password = 'abc123!@#';  // wachtwoord db user
+$db_user = 'sa'; // db user
+$db_password = 'abc123!@#'; // wachtwoord db user
 
 // Het 'ssl certificate' wordt altijd geaccepteerd (niet overnemen op productie, verder dan altijd "TrustServerCertificate=1"!!!)
 $verbinding = new PDO('sqlsrv:Server=' . $db_host . ';Database=' . $db_name . ';ConnectionPooling=0;TrustServerCertificate=1', $db_user, $db_password);
@@ -18,18 +18,19 @@ unset($db_password);
 $verbinding->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Functie om in andere files toegang te krijgen tot de verbinding.
-function maakVerbinding() {
-  global $verbinding;
-  return $verbinding;
+function maakVerbinding()
+{
+    global $verbinding;
+    return $verbinding;
 }
 
 
 
 $pdo = maakVerbinding();
 
-try{
-$sh = $pdo->prepare( "EXEC sp_columns medewerkers");
-$sh->execute();
+try {
+    $sh = $pdo->prepare("EXEC sp_columns medewerkers");
+    $sh->execute();
     // tabel bestaat, maak gebruiker aan.
     $uid = 1;
     $username = "Richard"; //de gebruikersnaam van de medewerker die wordt toegevoegd
@@ -43,8 +44,8 @@ $sh->execute();
     //$sh = $pdo->prepare($sql);
     //$sh->execute();
 
-    echo "Gebruiker " .$username. " is aangemaakt met als uid ".$uid." en als wachtwoord " . $password;
-}catch(PDOException $exception) {
+    echo "Gebruiker " . $username . " is aangemaakt met als uid " . $uid . " en als wachtwoord " . $password;
+} catch (PDOException $exception) {
     // medewerkerstabel bestaat nog niet, maak hem  aan!
     $sql = "
     CREATE TABLE medewerkers (

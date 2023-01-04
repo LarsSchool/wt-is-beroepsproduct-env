@@ -23,7 +23,7 @@ $conn = maakVerbinding();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <?php titel_knop()?>
+    <?php titel_knop() ?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">

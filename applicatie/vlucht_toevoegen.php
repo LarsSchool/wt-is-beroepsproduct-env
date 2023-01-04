@@ -26,7 +26,7 @@ $conn = maakVerbinding();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <?php titel_knop()?>
+    <?php titel_knop() ?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">
@@ -53,21 +53,21 @@ $conn = maakVerbinding();
       <br>
       <input type="submit" value="Vlucht toevoegen" name="submit">
     </form>
-      <?php
-      try{
+    <?php
+    try {
       if (isset($_POST['submit'])) {
         // $vertrektijd = $_POST['vertrektijd'];
         $systeem_datum = new DateTime('now', new DateTimeZone('CET'));
         $systeem_datum = $systeem_datum->format('Y/m/d H:i:s.000');
         // $vertrektijd = strtotime($vertrektijd);
-
+    
         //if ($_POST['vertrektijd'] > $systeem_datum) {
+    
+        $vertrektijd = strtotime($_POST['vertrektijd']);
+        $vertrektijd = new DateTime("@$vertrektijd");
+        $vertrektijd = $vertrektijd->format('Y/m/d H:i:s.000');
 
-          $vertrektijd = strtotime($_POST['vertrektijd']);
-          $vertrektijd = new DateTime("@$vertrektijd");    
-          $vertrektijd = $vertrektijd->format('Y/m/d H:i:s.000');              
-
-          if ($vertrektijd > $systeem_datum) {
+        if ($vertrektijd > $systeem_datum) {
           $vluchtnummer = get_max('vlucht', 'vluchtnummer') + 1;
           $bestemming = $_POST['bestemming'];
           $gatecode = $_POST['gatecode'];
@@ -78,7 +78,7 @@ $conn = maakVerbinding();
           //$vertrektijd = $_POST['vertrektijd'];
           //$vertrektijd = date('Y-m-d H:i:s.000', strtotime($vertrektijd));
           //$vertrektijd = $vertrektijd->format('Y/m/d H:i:s.000');
-
+    
 
           $sql = "insert into vlucht (vluchtnummer, bestemming, gatecode, max_aantal, max_gewicht_pp, max_totaalgewicht, vertrektijd, maatschappijcode)
                   values (:vluchtnummer, :bestemming, :gatecode, :max_aantal_passagiers, :max_gewicht_pp, :max_totaalgewicht,:vertrektijd, :maatschappijcode)";
@@ -93,11 +93,10 @@ $conn = maakVerbinding();
           echo '<p class="foutmeldingen">Er is een fout opgetreden. Controleer of de gegevens kloppen.</p>';
         }
       }
-    } 
-    catch (PDOException $e) {
+    } catch (PDOException $e) {
       echo '<p class="foutmeldingen">Er is een fout opgetreden. Dit komt waarschijnlijk doordat er een gegeven verkeerd is ingevuld.</p>';
     }
-      ?>
+    ?>
   </main>
 </body>
 

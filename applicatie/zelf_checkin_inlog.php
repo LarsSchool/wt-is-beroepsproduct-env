@@ -81,7 +81,7 @@ $conn = maakVerbinding();
         echo '<p class="foutmeldingen">Deze vlucht is helaas al volgeboekt.</p>';
       }
     }
-    
+
     //INCHECKEN BAGAGE 
     if (isset($_POST['inchecken_bagage'])) {
       $passagiernummer = $_POST['passagiernummer_bagage'];

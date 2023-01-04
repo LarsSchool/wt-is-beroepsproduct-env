@@ -21,7 +21,7 @@ log_out();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <?php titel_knop()?>
+    <?php titel_knop() ?>
   </header>
   <nav class="navigatie">
     <ul>

@@ -23,7 +23,7 @@ log_out();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <?php titel_knop()?>
+    <?php titel_knop() ?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">
@@ -33,20 +33,22 @@ log_out();
   </nav>
   <main>
     <form class="inlog" action="medewerker_inlog.php" method="POST">
-      <input class="gebruikersnaam" type="text" placeholder="Gebruikersnaam" pattern="[A-Za-z].{6,}" name="username" required>
+      <input class="gebruikersnaam" type="text" placeholder="Gebruikersnaam" pattern="[A-Za-z].{6,}" name="username"
+        required>
       <br>
-      <input class="wachtwoord" type="password" placeholder="Wachtwoord" pattern="[a-z0-9._%+-].{8,}" name="password" required>
+      <input class="wachtwoord" type="password" placeholder="Wachtwoord" pattern="[a-z0-9._%+-].{8,}" name="password"
+        required>
       <br>
       <input class="inloggen" type="submit" value="Inloggen">
     </form>
     <?php
-   if(isset($_POST['username']) && isset($_POST['password'])){
-     if(login($_POST['username'], $_POST['password'])){
+    if (isset($_POST['username']) && isset($_POST['password'])) {
+      if (login($_POST['username'], $_POST['password'])) {
         header('location: medewerker_main_site.php');
-     } else {
-        echo'<p class="foutmeldingen">Het wachtwoord of de gebruikersnaam is verkeerd ingevoerd.</p>';
-     }
-   }
+      } else {
+        echo '<p class="foutmeldingen">Het wachtwoord of de gebruikersnaam is verkeerd ingevoerd.</p>';
+      }
+    }
     ?>
   </main>
 </body>

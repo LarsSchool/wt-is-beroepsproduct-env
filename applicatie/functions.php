@@ -113,7 +113,7 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
   } else if (is_numeric($where)) {
     $subquery = 'vluchtnummer = ' . $where;
     $sql = "SELECT * FROM vlucht WHERE " . $subquery;
-  } else if (strlen($where) != 0){
+  } else if (strlen($where) != 0) {
     echo $where;
     var_dump($where);
     header("location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
@@ -264,7 +264,7 @@ function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_pas
   } else if (is_numeric($where)) {
     $subquery = 'passagiernummer = ' . $where;
     $sql = "SELECT * FROM passagier WHERE " . $subquery;
-  } else if (strlen($where) != 0){
+  } else if (strlen($where) != 0) {
     echo $where;
     var_dump($where);
     header("location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
@@ -412,10 +412,10 @@ function check_weight($where = '-1 or 1=1')
   foreach ($query as $rij) {
     $resultaat = $rij[0];
   }
-  if($resultaat == NULL){
+  if ($resultaat == NULL) {
     return get_data('vlucht', 'max_totaalgewicht', "vluchtnummer = $where");
-  } else{
-   return $resultaat;
+  } else {
+    return $resultaat;
   }
 }
 
@@ -453,13 +453,13 @@ function check_log_in()
 {
   if ($_SERVER['PHP_SELF'] == '/medewerker_inlog.php') {
     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
-      header('location: medewerker_main_site.php');   
+      header('location: medewerker_main_site.php');
     }
   } else if ($_SERVER['PHP_SELF'] != '/medewerker_inlog.php') {
-   if (!$_SESSION['logged_in']) {
-     header('location: index.php');
-   }
- }
+    if (!$_SESSION['logged_in']) {
+      header('location: index.php');
+    }
+  }
 }
 
 
@@ -468,12 +468,12 @@ function check_log_in()
 
 function login($username, $password)
 {
-   require_once('db_connectie.php');
-   $conn = maakVerbinding();
+  require_once('db_connectie.php');
+  $conn = maakVerbinding();
 
   $salt = 'JIDWHUDWHUWDHUWDHUWDIJOJVHIVEUHIUIEEJIEJFE';
   $password .= $salt;
-  
+
   $sql = "SELECT password FROM medewerkers WHERE naam =  '$username'";
   $query = $conn->prepare($sql);
   $query->execute();
@@ -482,24 +482,25 @@ function login($username, $password)
   foreach ($query as $rij) {
     $hash = $rij[0];
   }
-    $_SESSION['logged_in'] = false;
-  if (password_verify($password, $hash)){
+  $_SESSION['logged_in'] = false;
+  if (password_verify($password, $hash)) {
     $_SESSION['logged_in'] = true;
     session_start();
   }
-  
+
   return password_verify($password, $hash);
-  }
+}
 
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
-function log_out(){
-  if(isset($_POST['log_out'])){
-  session_unset();
-  session_destroy();
-  header('location: index.php');
+function log_out()
+{
+  if (isset($_POST['log_out'])) {
+    session_unset();
+    session_destroy();
+    header('location: index.php');
     exit;
   }
 }
@@ -508,13 +509,14 @@ function log_out(){
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
-function titel_knop(){
-  if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']){
-  echo '<form method="POST">
+function titel_knop()
+{
+  if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+    echo '<form method="POST">
   <button type="submit" name="log_out">Gelre Airport</button>
   </form>';
   } else {
-  echo '<h1>Gelre Airport</h1>';
+    echo '<h1>Gelre Airport</h1>';
   }
 
 }
