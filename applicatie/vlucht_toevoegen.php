@@ -56,12 +56,9 @@ $conn = maakVerbinding();
     <?php
     try {
       if (isset($_POST['submit'])) {
-        // $vertrektijd = $_POST['vertrektijd'];
         $systeem_datum = new DateTime('now', new DateTimeZone('CET'));
         $systeem_datum = $systeem_datum->format('Y/m/d H:i:s.000');
-        // $vertrektijd = strtotime($vertrektijd);
     
-        //if ($_POST['vertrektijd'] > $systeem_datum) {
     
         $vertrektijd = strtotime($_POST['vertrektijd']);
         $vertrektijd = new DateTime("@$vertrektijd");
@@ -75,10 +72,6 @@ $conn = maakVerbinding();
           $max_gewicht_pp = $_POST['max_gewicht_pp'];
           $max_totaalgewicht = $_POST['max_totaalgewicht'];
           $maatschappijcode = $_POST['maatschappijcode'];
-          //$vertrektijd = $_POST['vertrektijd'];
-          //$vertrektijd = date('Y-m-d H:i:s.000', strtotime($vertrektijd));
-          //$vertrektijd = $vertrektijd->format('Y/m/d H:i:s.000');
-    
 
           $sql = "insert into vlucht (vluchtnummer, bestemming, gatecode, max_aantal, max_gewicht_pp, max_totaalgewicht, vertrektijd, maatschappijcode)
                   values (:vluchtnummer, :bestemming, :gatecode, :max_aantal_passagiers, :max_gewicht_pp, :max_totaalgewicht,:vertrektijd, :maatschappijcode)";
