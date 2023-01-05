@@ -331,7 +331,7 @@ function get_max($tabel, $kolom, $where = '1=1')
 
   $query = $conn->prepare($sql);
   $query->execute();
-  $resultaat;
+  $resultaat = '';
 
   foreach ($query as $rij) {
     $resultaat = $rij[0];
