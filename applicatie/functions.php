@@ -269,7 +269,6 @@ function krijg_Passagierinformatie($where = '', $bool_show_all_passagiers = fals
 
 //deze zegt het zelf al, het krijgt de max waarde van iets. dit is handig voor bijvoorbeeld een nieuw vluchtnummer, passagiernummer of objectvolgnummer
 //als je hier placeholders gebruikt, werkt hij niet meer
-
 function get_max($tabel, $kolom, $where = '1=1')
 {
   require_once('db_connectie.php');

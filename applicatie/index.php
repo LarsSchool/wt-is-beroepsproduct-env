@@ -18,12 +18,16 @@ log_out();
   <link rel="stylesheet" href="css/style.css">
   <style>
     body {
-      background-image: url('images/vliegveld_1.jpg');
-      /*Ik heb gekozen voor inline-css, omdat deze achtergrond alleen hier gebruikt wordt.*/
-      background-size: cover;
-      background-attachment: fixed;
+        background-size: cover;
+        background-attachment: fixed;
+        <?php
+            $images = array('images/vliegveld_1.jpg', 'images/vliegveld_3.jpg', 'images/vliegveld_4.jpg', 'images/vliegveld_5.jpg');
+            $randomAchtergrond = rand(0, count($images) - 1);
+            echo 'background-image: url("' . $images[$randomAchtergrond] . '");';
+        ?>
     }
   </style>
+  
 </head>
 
 <body>
