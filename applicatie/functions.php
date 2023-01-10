@@ -1,62 +1,13 @@
 <?php
 
 
-
-//-------------------------------------------------------------------------------------------------------------------------------------------
-//functie die richard heeft voor gedaan
-function krijgMuziekscholen($isAdmin = 0, $where = '')
-{
-
-  $conn = maakVerbinding();
-
-  $data = '<table
-              <thead>
-                <th>#</th>
-                <th>SchoolID</th>
-                <th>Naam</th>
-                <th>Plaatsnaam</th>';
-  if ($isAdmin == 1) {
-    $data .= '<th>Edit</th>';
-    $data .= '<th>Delete</th>';
-  }
-  $data .= '</thead>';
-
-  if (strlen($where) == 0) {
-    $subquery = '1=1';
-  } else {
-    $subquery = 'naam = ' . $where;
-  }
-
-  $sql = "SELECT * FROM muziekschool WHERE " . $subquery;
-
-  $stmt = $conn->prepare($sql);
-  $stmt->execute([$where]);
-
-  $i = 0;
-  foreach ($stmt as $rij) {
-    $data .= '<tr>';
-    $data .= '<td>' . $i . '</td>';
-    $data .= '<td>' . $rij['schoolid'] . '</td>';
-    $data .= '<td>' . $rij['naam'] . '</td>';
-    $data .= '<td>' . $rij['plaatsnaam'] . '</td>';
-    if ($isAdmin == 1) {
-      $data .= '<th><a href="index.php?edit=' . $rij['schoolid'] . '">E</a></th>';
-      $data .= '<th><a href="index.php?delete=' . $rij['schoolid'] . '">E</a></th>';
-
-    }
-    $data .= '</tr>';
-    $i++;
-  }
-  $data .= '</table';
-  return $data;
-
-}
-
-
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
+//de code om het vluchtenschema te laten zien op de website medewerker_main_site en te kunnen sorteren op verschillende dingen
+//de $isAdmin is nodig omdat deze functie gebruikt wordt voor de medewerkersite én de passagiersite
+//de bool_show_al_vluchten is om te kijken of alle vluchten nodig zijn, want dan moet dat in de query staan (het laten zien van alle vluchten)
+//de bool_sort_by is om te kijken of er in de query gesorteerd moet worden of niet.
 function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vluchten = false, $bool_sort_by = false)
 {
 
@@ -128,7 +79,7 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
     $data = '<table
                 <thead>
                   <th>Vluchtnummer</a></th>
-                  <th><a href="medewerker_main_site.php?bestemming=' . $bestemmingVolgorde . '">Bestemming</th>
+                  <th><a href="medewerker_main_site.php?bestemming=' . $bestemmingVolgorde . '">Bestemming</a></th>
                   <th>Gatecode</th>
                   <th>Max aantal passagiers</th>
                   <th>Max gewicht pp</th>
@@ -196,7 +147,10 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
-function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_passagiers = false, $bool_sort_by = false)
+//de code om het passagierschema te laten zien op de website schema_passagier en te kunnen sorteren op verschillende dingen
+//de bool_show_all_passagiers is om te kijken of alle passagiers nodig zijn, want dan moet dat in de query staan (het laten zien van alle passagiers)
+//de bool_sort_by is om te kijken of er in de query gesorteerd moet worden of niet.
+function krijg_Passagierinformatie($where = '', $bool_show_all_passagiers = false, $bool_sort_by = false)
 {
 
   $stoelVolgorde = "desc";
@@ -253,7 +207,6 @@ function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_pas
         $sql = "SELECT * FROM passagier ";
       }
     }
-    //dit gedeelte nog bij de vluchten implementeren
     else {
       if ($bool_sort_by) {
         $sql = "SELECT TOP 50 * FROM passagier " . $orderby;
@@ -265,8 +218,6 @@ function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_pas
     $subquery = 'passagiernummer = ' . $where;
     $sql = "SELECT * FROM passagier WHERE " . $subquery;
   } else if (strlen($where) != 0) {
-    echo $where;
-    var_dump($where);
     header("location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     die();
   } else {
@@ -321,7 +272,7 @@ function krijg_Passagierinformatie($isAdmin = 0, $where = '', $bool_show_all_pas
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
-
+//deze zegt het zelf al, het krijgt de max waarde van iets. dit is handig voor bijvoorbeeld een nieuw vluchtnummer, passagiernummer of objectnummer
 function get_max($tabel, $kolom, $where = '1=1')
 {
   require_once('db_connectie.php');
@@ -343,6 +294,7 @@ function get_max($tabel, $kolom, $where = '1=1')
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//de code om te controleren of er al iets staat in die plek in de database (bijvoorbeeld om te kijken of een passagier al ingecheckt is of niet)
 function check_of_leeg($tabel, $kolom, $where)
 {
   require_once('db_connectie.php');
@@ -370,6 +322,7 @@ function check_of_leeg($tabel, $kolom, $where)
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//de code om gegevens op te halen uit te tabel
 function get_data($tabel, $kolom, $where = '1=1')
 {
   require_once('db_connectie.php');
@@ -391,6 +344,7 @@ function get_data($tabel, $kolom, $where = '1=1')
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//de code om te controleren of het maximale gewicht aan bagage niet overschreden wordt bij het inchecken van bagage
 function check_weight($where = '-1 or 1=1')
 {
   require_once('db_connectie.php');
@@ -423,6 +377,7 @@ function check_weight($where = '-1 or 1=1')
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//de code om te kijken of er nog plek is op het vliegtuig voor het toevoegen/ inchecken van een passagier
 function check_space_onboard($where = '-1 or 1=1')
 {
   require_once('db_connectie.php');
@@ -449,6 +404,7 @@ function check_space_onboard($where = '-1 or 1=1')
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//de code om te controleren (op de medewerker sites) of de gebruiker bevoegd is om deze pagina te bezoeken
 function check_log_in()
 {
   if ($_SERVER['PHP_SELF'] == '/medewerker_inlog.php') {
@@ -466,6 +422,7 @@ function check_log_in()
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//de code om in te loggen via de inlogpagina, hier worden de inloggegevens gecontroleerd.
 function login($username, $password)
 {
   require_once('db_connectie.php');
@@ -484,8 +441,8 @@ function login($username, $password)
   }
   $_SESSION['logged_in'] = false;
   if (password_verify($password, $hash)) {
-    $_SESSION['logged_in'] = true;
     session_start();
+    $_SESSION['logged_in'] = true;
   }
 
   return password_verify($password, $hash);
@@ -495,6 +452,7 @@ function login($username, $password)
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+  //de code om uit te loggen wanneer er op de logout knop is gedrukt
 function log_out()
 {
   if (isset($_POST['log_out'])) {
@@ -509,6 +467,7 @@ function log_out()
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//de code om een logout knop of gewoon een text linksbovenin te krijgen
 function titel_knop()
 {
   if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {

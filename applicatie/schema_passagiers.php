@@ -58,9 +58,9 @@ if (isset($_POST['passagiernummer'])) {
     <div class="tabel_container">
       <?php
       if (!isset($_GET['show_all_passagiers'])) {
-        echo krijg_passagierinformatie(1, $passagiernummer, false);
+        echo krijg_passagierinformatie($passagiernummer, false);
       } else if (isset($_GET['show_all_passagiers'])) {
-        echo krijg_passagierinformatie(1, $passagiernummer, true);
+        echo krijg_passagierinformatie($passagiernummer, true);
       }
       ?>
     </div>
