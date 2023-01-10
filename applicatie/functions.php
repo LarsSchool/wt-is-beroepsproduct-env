@@ -28,8 +28,8 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
           $bestemmingVolgorde = "desc";
           break;
       }
-
       $bool_sort_by = true;
+
     } else if (isset($_GET['vertrektijd'])) {
       switch ($_GET['vertrektijd']) {
 
@@ -43,10 +43,8 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
           break;
       }
 
-
       $bool_sort_by = true;
     }
-
 
     if ($bool_show_all_vluchten) {
       if ($bool_sort_by) {
@@ -65,8 +63,6 @@ function krijg_Vluchtinformatie($isAdmin = 0, $where = '', $bool_show_all_vlucht
     $subquery = 'vluchtnummer = ' . $where;
     $sql = "SELECT * FROM vlucht WHERE " . $subquery;
   } else if (strlen($where) != 0) {
-    echo $where;
-    var_dump($where);
     header("location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     die();
   } else {
@@ -199,7 +195,6 @@ function krijg_Passagierinformatie($where = '', $bool_show_all_passagiers = fals
       }
       $bool_sort_by = true;
     }
-    // ALS IK ALLE VLUCHTEN HEB LATEN ZIEN, MAAR DAN WIL SORTEREN, REFRESHED HIJ ALSOF IK NIET ALLES HEB LATEN ZIEN, HOE FIX JE DIT????
     if ($bool_show_all_passagiers) {
       if ($bool_sort_by) {
         $sql = "SELECT * FROM passagier " . $orderby;
@@ -272,7 +267,7 @@ function krijg_Passagierinformatie($where = '', $bool_show_all_passagiers = fals
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
-//deze zegt het zelf al, het krijgt de max waarde van iets. dit is handig voor bijvoorbeeld een nieuw vluchtnummer, passagiernummer of objectnummer
+//deze zegt het zelf al, het krijgt de max waarde van iets. dit is handig voor bijvoorbeeld een nieuw vluchtnummer, passagiernummer of objectvolgnummer
 function get_max($tabel, $kolom, $where = '1=1')
 {
   require_once('db_connectie.php');
