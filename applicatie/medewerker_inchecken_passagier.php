@@ -97,12 +97,13 @@ $conn = maakVerbinding();
       try {
         $passagiernummer = $_POST['passagiernummer_bagage'];
         $gewicht = $_POST['gewicht'];
-        $check = check_weight(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer"));
 
         if(!is_numeric($passagiernummer) && !is_numeric($gewicht)){
           header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
           exit;
         }
+
+        $check = check_weight(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer"));
 
         if ($check > $gewicht) {
           $objectvolgnummer = get_max('bagageobject', 'objectvolgnummer', "passagiernummer = $passagiernummer");
