@@ -57,14 +57,16 @@ $conn = maakVerbinding();
     if (isset($_POST['inchecken_passagier'])) {
       try {
         $passagiernummer = $_POST['passagiernummer_passagier'];
+
+        if (!is_numeric($passagiernummer)) {
+          header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+          exit;
+        }
+
         if (check_space_onboard(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer")) > 0) {
           $check = check_of_leeg('passagier', 'inchecktijdstip', "passagiernummer = $passagiernummer");
           $check2 = check_of_leeg('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer");
 
-          if(!is_numeric($passagiernummer)){
-            header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-            exit;
-          }
 
           if ($check && !$check2) {
             $inchecktijdstip = new DateTime('now', new DateTimeZone('CET'));
@@ -88,7 +90,7 @@ $conn = maakVerbinding();
         } else {
           echo '<p class="foutmeldingen">Deze vlucht is al volgeboekt of de passagier is al ingecheckt.</p>';
         }
-      } catch(PDOException $e) {
+      } catch (PDOException $e) {
         echo '<p class="foutmeldingen">Dit passagiernummer bestaat niet.</p>';
       }
     }
@@ -98,14 +100,14 @@ $conn = maakVerbinding();
         $passagiernummer = $_POST['passagiernummer_bagage'];
         $gewicht = $_POST['gewicht'];
 
-        if(!is_numeric($passagiernummer) && !is_numeric($gewicht)){
+        if (!is_numeric($passagiernummer) && !is_numeric($gewicht)) {
           header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
           exit;
         }
 
         $check = check_weight(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer"));
 
-        if ($check > $gewicht) {
+        if ($check >= $gewicht) {
           $objectvolgnummer = get_max('bagageobject', 'objectvolgnummer', "passagiernummer = $passagiernummer");
           if ($objectvolgnummer == NULL) {
             $objectvolgnummer = 0;
@@ -120,19 +122,24 @@ $conn = maakVerbinding();
           $affected_rows = $query->rowCount();
           if ($affected_rows == 0) {
             $_SESSION['error_message'] = 'Er mag niet meer dan 9 bagage meegenomen worden per passagier!';
-          } if ($affected_rows >= 1) {
+          }
+          if ($affected_rows >= 1) {
             //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
             header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+          } else {
+            echo '<p class="foutmeldingen">Er is iets fout gegaan, probeer het opnieuw.</p>';
           }
+        } else if ($check >! $gewicht) {
+          echo '<p class="foutmeldingen">Het maximale gewicht wordt overschreden met deze bagage. Er kan maximaal nog '.$check.'kg toegevoegd worden.</p>';
         }
-        } catch(PDOException $e) {
-          echo '<p class="foutmeldingen">Dit passagiernummer bestaat niet.</p>';
-       }
+      } catch (PDOException $e) {
+        echo '<p class="foutmeldingen">Dit passagiernummer bestaat niet.</p>';
       }
-      if (isset($_SESSION['error_message'])) {
-        echo '<p class="foutmeldingen">' . $_SESSION['error_message'] . '</p>';
-        unset($_SESSION['error_message']);
-      }
+    }
+    if (isset($_SESSION['error_message'])) {
+      echo '<p class="foutmeldingen">' . $_SESSION['error_message'] . '</p>';
+      unset($_SESSION['error_message']);
+    }
 
     ?>
   </main>

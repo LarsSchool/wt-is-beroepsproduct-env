@@ -268,6 +268,8 @@ function krijg_Passagierinformatie($where = '', $bool_show_all_passagiers = fals
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 //deze zegt het zelf al, het krijgt de max waarde van iets. dit is handig voor bijvoorbeeld een nieuw vluchtnummer, passagiernummer of objectvolgnummer
+//als je hier placeholders gebruikt, werkt hij niet meer
+
 function get_max($tabel, $kolom, $where = '1=1')
 {
   require_once('db_connectie.php');
@@ -290,6 +292,7 @@ function get_max($tabel, $kolom, $where = '1=1')
 
 
 //de code om te controleren of er al iets staat in die plek in de database (bijvoorbeeld om te kijken of een passagier al ingecheckt is of niet)
+//als je hier placeholders gebruikt, werkt hij niet meer
 function check_of_leeg($tabel, $kolom, $where)
 {
   require_once('db_connectie.php');
@@ -318,6 +321,7 @@ function check_of_leeg($tabel, $kolom, $where)
 
 
 //de code om gegevens op te halen uit te tabel
+//als je hier placeholders gebruikt, werkt hij niet meer
 function get_data($tabel, $kolom, $where = '1=1')
 {
   require_once('db_connectie.php');
@@ -426,9 +430,9 @@ function login($username, $password)
   $salt = 'JIDWHUDWHUWDHUWDHUWDIJOJVHIVEUHIUIEEJIEJFE';
   $password .= $salt;
 
-  $sql = "SELECT password FROM medewerkers WHERE naam =  '$username'";
+  $sql = "SELECT password FROM medewerkers WHERE naam =  :username";
   $query = $conn->prepare($sql);
-  $query->execute();
+  $query->execute(['username' => $username]);
 
   $hash = '';
   foreach ($query as $rij) {

@@ -48,8 +48,8 @@ $conn = maakVerbinding();
       <br>
       <input type="text" placeholder="Stoel" name="stoel" required>
       <br>
-      <input type="datetime-local" name="inchecktijdstip">
-      <br>
+      <!-- <input type="datetime-local" name="inchecktijdstip">
+      <br> -->
       <input type="submit" value="Passagier toevoegen" name="submit">
     </form>
     <?php
@@ -62,21 +62,21 @@ $conn = maakVerbinding();
         $balienummer = $_POST['balienummer'];
         $stoel = $_POST['stoel'];
 
-        if ($_POST['inchecktijdstip'] >= date('Y/m/d H:i')) {
-          $inchecktijdstip = $_POST['inchecktijdstip'];
-          $inchecktijdstip = date('Y-m-d H:i:s.000', strtotime($inchecktijdstip));
-          $sql = "insert into passagier
-          values (:passagiernummer, :naam, :vluchtnummer, :geslacht, :balienummer, :stoel, :inchecktijdstip)";
-          $query = $conn->prepare($sql);
-          $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel, 'inchecktijdstip' => $inchecktijdstip]);
-          $affected_rows = $query->rowCount();
-          if ($affected_rows >= 1) {
-            //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
-            header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
-          } else {
-            echo '<p class="foutmeldingen">Er is een fout opgetreden, controleer of de ingevulde gegevens kloppen.</p>';
-          }
-        } else {
+        // if ($_POST['inchecktijdstip'] >= date('Y/m/d H:i')) {
+        //   $inchecktijdstip = $_POST['inchecktijdstip'];
+        //   $inchecktijdstip = date('Y-m-d H:i:s.000', strtotime($inchecktijdstip));
+        //   $sql = "insert into passagier
+        //   values (:passagiernummer, :naam, :vluchtnummer, :geslacht, :balienummer, :stoel, :inchecktijdstip)";
+        //   $query = $conn->prepare($sql);
+        //   $query->execute(['passagiernummer' => $passagiernummer, 'naam' => $naam, 'vluchtnummer' => $vluchtnummer, 'geslacht' => $geslacht, 'balienummer' => $balienummer, 'stoel' => $stoel, 'inchecktijdstip' => $inchecktijdstip]);
+        //   $affected_rows = $query->rowCount();
+        //   if ($affected_rows >= 1) {
+        //     //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
+        //     header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+        //   } else {
+        //     echo '<p class="foutmeldingen">Er is een fout opgetreden, controleer of de ingevulde gegevens kloppen.</p>';
+        //   }
+        // } else {
           $sql = "insert into passagier
           values (:passagiernummer, :naam, :vluchtnummer, :geslacht, :balienummer, :stoel, NULL)";
           $query = $conn->prepare($sql);
@@ -89,7 +89,7 @@ $conn = maakVerbinding();
           } else {
             echo '<p class="foutmeldingen">Er is een fout opgetreden, controleer of de ingevulde gegevens kloppen.</p>';
           }
-        }
+       // }
       }
     } catch (PDOException $e) {
       echo '<p class="foutmeldingen">Er is een fout opgetreden. Dit komt waarschijnlijk doordat er een verkeerde stoel of vluchtnummer is ingevoerd.</p>';
