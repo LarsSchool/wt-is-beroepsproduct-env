@@ -21,9 +21,9 @@ log_out();
         background-size: cover;
         background-attachment: fixed;
         <?php
-            $images = array('images/vliegveld_1.jpg', 'images/vliegveld_3.jpg', 'images/vliegveld_4.jpg', 'images/vliegveld_5.jpg');
-            $randomAchtergrond = rand(0, count($images) - 1);
-            echo 'background-image: url("' . $images[$randomAchtergrond] . '");';
+            $fotos = array('images/vliegveld_1.jpg', 'images/vliegveld_3.jpg', 'images/vliegveld_4.jpg', 'images/vliegveld_5.jpg');
+            $randomAchtergrond = rand(0, count($fotos) - 1);
+            echo 'background-image: url("' . $fotos[$randomAchtergrond] . '");';
         ?>
     }
   </style>
