@@ -56,32 +56,36 @@ $conn = maakVerbinding();
         header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
         exit;
       }
-      if (check_space_onboard(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer")) > 0) {
-        $check = check_of_leeg('passagier', 'inchecktijdstip', "passagiernummer = $passagiernummer");
-        $check2 = check_of_leeg('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer");
+      try {
+        if (check_space_onboard(get_data('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer")) > 0) {
+          $check = check_of_leeg('passagier', 'inchecktijdstip', "passagiernummer = $passagiernummer");
+          $check2 = check_of_leeg('passagier', 'vluchtnummer', "passagiernummer = $passagiernummer");
 
-        if ($check && !$check2) {
-          $inchecktijdstip = new DateTime('now', new DateTimeZone('CET'));
-          $inchecktijdstip = $inchecktijdstip->format('Y/m/d H:i:s.v');
+          if ($check && !$check2) {
+            $inchecktijdstip = new DateTime('now', new DateTimeZone('CET'));
+            $inchecktijdstip = $inchecktijdstip->format('Y/m/d H:i:s.v');
 
-          $sql = "update Passagier
+            $sql = "update Passagier
           set inchecktijdstip = :inchecktijdstip
           where passagiernummer = :passagiernummer";
-          $query = $conn->prepare($sql);
-          $query->execute(['inchecktijdstip' => $inchecktijdstip, 'passagiernummer' => $passagiernummer]);
-          $affected_rows = $query->rowCount();
-          var_dump($affected_rows);
-          if ($affected_rows >= 1) {
-            //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
-            header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+            $query = $conn->prepare($sql);
+            $query->execute(['inchecktijdstip' => $inchecktijdstip, 'passagiernummer' => $passagiernummer]);
+            $affected_rows = $query->rowCount();
+            var_dump($affected_rows);
+            if ($affected_rows >= 1) {
+              //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
+              header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
+            } else {
+              echo '<p class="foutmeldingen">Er is iets fout gegaan, probeer het opnieuw.</p>';
+            }
           } else {
-            echo '<p class="foutmeldingen">Er is iets fout gegaan, probeer het opnieuw.</p>';
+            echo '<p class="foutmeldingen">Deze passagier is al ingecheckt of de passagier bestaat (nog) niet.</p>';
           }
         } else {
-          echo '<p class="foutmeldingen">Deze passagier is al ingecheckt of de passagier bestaat (nog) niet.</p>';
+          echo '<p class="foutmeldingen">Deze vlucht is helaas al volgeboekt.</p>';
         }
-      } else {
-        echo '<p class="foutmeldingen">Deze vlucht is helaas al volgeboekt.</p>';
+      } catch (PDOException $e) {
+        echo '<p class="foutmeldingen">Dit passagiernummer bestaat niet.</p>';
       }
     }
 
