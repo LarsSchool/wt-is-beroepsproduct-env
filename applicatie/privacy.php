@@ -13,7 +13,7 @@ log_out();
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fletnix</title>
+  <title>Gelre airport</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -21,7 +21,7 @@ log_out();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <?php titel_knop() ?>
+    <?= titel_knop() ?>
   </header>
   <nav class="navigatie">
     <ul>
@@ -31,7 +31,7 @@ log_out();
   <main>
     <div class="privacy_policy">
       <h1>Privacy Policy</h1>
-      <p>Last updated: December 28, 2022</p>
+      <p>Last updated: January 11, 2023</p>
       <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your
         information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
       <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection
@@ -52,7 +52,7 @@ log_out();
         </li>
         <li>
           <p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or
-            &quot;Our&quot; in this Agreement) refers to Fletnix/ gelre airport.</p>
+            &quot;Our&quot; in this Agreement) refers to Gelre Airport.</p>
         </li>
         <li>
           <p><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other
@@ -84,10 +84,8 @@ log_out();
             Service or from the Service infrastructure itself (for example, the duration of a page visit).</p>
         </li>
         <li>
-          <p><strong>Website</strong> refers to Fletnix/ gelre airport, accessible from <a
-              href="file:///C:/Users/Larsv/Documents/GitHub/beroepsproduct-wtux-LarsSchool/index.html"
-              rel="external nofollow noopener"
-              target="_blank">file:///C:/Users/Larsv/Documents/GitHub/beroepsproduct-wtux-LarsSchool/index.html</a></p>
+          <p><strong>Website</strong> refers to Gelre Airport, accessible from <a href="http://localhost:8080/index.php"
+              rel="external nofollow noopener" target="_blank">http://localhost:8080/index.php</a></p>
         </li>
         <li>
           <p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal
@@ -101,13 +99,7 @@ log_out();
         be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
       <ul>
         <li>
-          <p>Email address</p>
-        </li>
-        <li>
           <p>First name and last name</p>
-        </li>
-        <li>
-          <p>Phone number</p>
         </li>
         <li>
           <p>Usage Data</p>
@@ -306,10 +298,12 @@ log_out();
       <h1>Contact Us</h1>
       <p>If you have any questions about this Privacy Policy, You can contact us:</p>
       <ul>
-        <li>By visiting this page on our website: <a
-            href="file:///C:\Users\Larsv\Documents\GitHub\wt-is-beroepsproduct-env\applicatie\index.php"
-            rel="external nofollow noopener"
-            target="_blank">file:///C:\Users\Larsv\Documents\GitHub\wt-is-beroepsproduct-env\applicatie\contact.php</a>
+        <li>
+          <p>By email: richard.vos@han.nl</p>
+        </li>
+        <li>
+          <p>By visiting this page on our website: <a href="http://localhost:8080/index.php"
+              rel="external nofollow noopener" target="_blank">http://localhost:8080/index.php</a></p>
         </li>
       </ul>
     </div>

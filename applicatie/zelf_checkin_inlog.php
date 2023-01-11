@@ -15,7 +15,7 @@ $conn = maakVerbinding();
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fletnix</title>
+  <title>Gelre airport</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -23,7 +23,7 @@ $conn = maakVerbinding();
 <body>
   <!-- hier schrijf jij je code -->
   <header>
-    <?php titel_knop() ?>
+    <?= titel_knop() ?>
     <a href="privacy.php">Privacy policy</a>
   </header>
   <nav class="navigatie">
@@ -74,7 +74,6 @@ $conn = maakVerbinding();
           if ($affected_rows >= 1) {
             //Als je de website helemaal offline wilt laten werken, moet dit weg. Dit is toch wel leuker :).
             header("Location: https://www.youtube.com/watch?v=r13riaRKGo0");
-            echo 'Gelukt!';
           } else {
             echo '<p class="foutmeldingen">Er is iets fout gegaan, probeer het opnieuw.</p>';
           }

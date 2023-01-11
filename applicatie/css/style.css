@@ -258,6 +258,17 @@ table, th, td {
     margin-top: 2.4em;
     }
 
+  .index{
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  .passagier_main_site{
+    background-image: url('images/vliegveld_2.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
 
   @media screen and (max-width: 800px){
     main, body{

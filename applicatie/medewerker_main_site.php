@@ -23,14 +23,14 @@ if(isset($_POST['vluchtnummer'])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fletnix</title>
+    <title>Gelre airport</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- hier schrijf jij je code --> 
     <header>
-        <?php titel_knop()?>
+        <?= titel_knop()?>
         <a href="privacy.php">Privacy policy</a>
       </header>
       <nav class="navigatie">

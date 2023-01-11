@@ -469,17 +469,42 @@ function log_out()
 function titel_knop()
 {
   if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-    echo '<form method="POST">
+    return '<form method="POST">
   <button type="submit" name="log_out">Gelre Airport</button>
   </form>';
   } else {
-    echo '<h1>Gelre Airport</h1>';
+    return '<h1>Gelre Airport</h1>';
   }
 
 }
 
 
+//-------------------------------------------------------------------------------------------------------------------------------------------
 
+
+function kiesAchtergrond(){
+  $resultaat = '<style>';
+    
+  if($_SERVER['PHP_SELF'] == '/passagier_main_site.php'){
+    $resultaat .="
+      body{
+      background-image: url('images/vliegveld_2.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      }";
+  } else if ($_SERVER['PHP_SELF'] == '/index.php') {
+    $fotos = array('images/vliegveld_1.jpg', 'images/vliegveld_3.jpg', 'images/vliegveld_4.jpg', 'images/vliegveld_5.jpg');
+    $randomAchtergrond = rand(0, count($fotos) - 1);
+    $resultaat .="
+      body{";
+    $resultaat .= 'background-image: url("' . $fotos[$randomAchtergrond] . '");
+      background-size: cover;
+      background-attachment: fixed;
+      }';
+  }
+   $resultaat .= '</style>';
+  return $resultaat;
+}
 
 
 ?>
