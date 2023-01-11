@@ -18,6 +18,7 @@ log_out();
   <link rel="stylesheet" href="css/style.css">
   <style>
     body {
+            /*Ik heb gekozen voor inline-css, omdat deze achtergronden alleen hier gebruikt worden.*/
         background-size: cover;
         background-attachment: fixed;
         <?php
